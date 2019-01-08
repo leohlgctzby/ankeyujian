@@ -12,9 +12,12 @@ const initUser = {
 
 function user(state=initUser, action) {
   switch (action.type) {
-    
+    case AUTH_SUCCESS:
+      return {...state, ...action.data} //先取原来的值，再覆盖
+    case ERROR_MSG:
+      return {...state, msg: action.data} 
     default:
-    return state
+      return state
   }
 }
 
