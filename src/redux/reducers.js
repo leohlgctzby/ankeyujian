@@ -1,18 +1,23 @@
 import { combineReducers } from 'redux';
+import { 
+  AUTH_SUCCESS,
+  ERROR_MSG
+} from './action-types'
 
-const defaultState = {
-  type:0
+const initUser = {
+  username: '', //用户名
+  type: '', //用户类型
+  msg: '' // 错误提示信息
 }
 
-function xxx(state = defaultState, action) {
-  return state
-}
-
-function yyy(state = defaultState, action) {
-  return state
+function user(state=initUser, action) {
+  switch (action.type) {
+    
+    default:
+    return state
+  }
 }
 
 export default combineReducers({
-  xxx,
-  yyy
+  user
 })
