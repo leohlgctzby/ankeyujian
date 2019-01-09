@@ -9,6 +9,7 @@ import {
   Button
 } from "antd-mobile";
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 import {register} from '../../redux/actions'
 import Logo from "../../components/logo/logo";
@@ -41,7 +42,11 @@ class Register extends Component {
 
   render() {
     const { type } = this.state;
-    const { msg } = this.props.user
+    const { msg, redirectTo } = this.props.user
+    if(redirectTo) {
+      return <Redirect to={redirectTo} />
+    }
+
     return (
       <div>
         <NavBar>硅&nbsp;谷&nbsp;直&nbsp;聘</NavBar>
