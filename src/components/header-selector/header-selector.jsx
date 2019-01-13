@@ -37,7 +37,7 @@ export default class HeadSelector extends Component{
 
      const listHeader = !icon ? '请选择头部' : (
       <div>
-      已选择图像:<img src={icon}/>
+      已选择图像:<img src={icon} alt=''/>
       </div>
      )
        return (
