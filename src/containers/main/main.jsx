@@ -7,6 +7,7 @@ import LaobanInfo from "../laoban-info/laoban-info";
 import DashenInfo from "../dashen-info/dashen-info";
 
 import { getRedirectTo } from "../../utils";
+import {getUser} from '../../redux/actions'
 
 class Main extends Component {
   componentDidMount() {
@@ -15,7 +16,8 @@ class Main extends Component {
     const { _id } = this.props.user;
     if (userid && !_id) {
       //发送异步请求，获取user
-      console.log("发送ajax请求获取user");
+      //console.log("发送ajax请求获取user");
+      this.props.getUser()
     }
   }
 
@@ -43,13 +45,6 @@ class Main extends Component {
       }
     }
 
-    //  //检查用户是否登录，如果没有，自动重定向到登录界面
-    //  //在主路由做，相当于下面的所有路由都有了
-    //  const {user} = this.props
-    //   if(!user._id) {
-    //     return <Redirect to='/login'/>
-    //   }
-
     return (
       <div>
         <Switch>
@@ -62,7 +57,7 @@ class Main extends Component {
   }
 }
 
-export default connect(state => ({ user: state.user }))(Main);
+export default connect(state => ({ user: state.user }), {getUser})(Main);
 
 // 1.实现自动登录
 //   1.componentDidMount（）

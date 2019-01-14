@@ -1,4 +1,4 @@
-import { reqRegister, reqLogin, reqUpdateUser } from "../api";
+import { reqRegister, reqLogin, reqUpdateUser, reqUser } from "../api";
 import {
   AUTH_SUCCESS,
   ERROR_MSG,
@@ -72,3 +72,17 @@ export const updateUser = user => {
     }
   };
 };
+
+//获取用户异步action
+export const getUser = () => {
+  return async dispatch => {
+    //执行异步ajax请求
+    const response = await reqUser()
+    const result = response.data
+    if(result.code===0) {
+      dispatch(receiveUser(result.data))
+    } else {
+      dispatch(resetUser(result.msg))
+    }
+  }
+}
