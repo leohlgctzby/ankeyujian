@@ -2,14 +2,53 @@ import React, { Component } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import Cookies from "js-cookie"; //可以操作前端cookie的对象set() remove（)
+import {NavBar} from 'antd-mobile'
 
 import LaobanInfo from "../laoban-info/laoban-info";
 import DashenInfo from "../dashen-info/dashen-info";
+import Dashen from "../dashen/dashen";
+import Laoban from "../laoban/lanban";
+import Message from "../message/message";
+import Personal from "../personal/personal";
+import NotFound from "../../components/not-found/not-found";
 
 import { getRedirectTo } from "../../utils";
-import {getUser} from '../../redux/actions'
+import { getUser } from "../../redux/actions";
 
 class Main extends Component {
+
+  // 给组件对象添加属性
+  navList = [ //包含所有导航组件的相关信息数据
+    {
+      path: "/laoban", // 路由路径
+      component: Laoban,
+      title: "大神列表",
+      icon: "dashen",
+      text: "大神"
+    },
+    {
+      path: "/dashen", // 路由路径
+      component: Dashen,
+      title: "老板列表",
+      icon: "laoban",
+      text: "老板"
+    },
+    {
+      path: "/message", // 路由路径
+      component: Message,
+      title: "消息列表",
+      icon: "message",
+      text: "消息"
+    },
+    {
+      path: "/personal", // 路由路径
+      component: Personal,
+      title: "用户中心",
+      icon: "personal",
+      text: "个人"
+    }
+  ];
+
   componentDidMount() {
     //之前登录过（cookie中有userid），但是现在还没登录（redux管理的user中没有_id），发请求获取对应的user
     const userid = Cookies.get("userid");
@@ -17,7 +56,7 @@ class Main extends Component {
     if (userid && !_id) {
       //发送异步请求，获取user
       //console.log("发送ajax请求获取user");
-      this.props.getUser()
+      this.props.getUser();
     }
   }
 
@@ -31,7 +70,7 @@ class Main extends Component {
     //如果有，读取redux中的user的状态
     const { user } = this.props;
     //如果user没有_id，返回一个null（不做任何显示）
-    debugger
+    debugger;
     if (!user._id) {
       return null;
     } else {
@@ -45,19 +84,31 @@ class Main extends Component {
       }
     }
 
+    const {navList} = this
+    const path = this.props.location.pathname//请求的路径
+    const currentNav = navList.find(nav=>nav.path===path)//得到当前的nav， 可能没有
+    
     return (
       <div>
+        {currentNav ? <NavBar>{currentNav.title}</NavBar> : null}
         <Switch>
+          {
+            navList.map(nav => <Route path={nav.path} component={nav.component} />)
+          }
           <Route path="/laobaninfo" component={LaobanInfo} />
           <Route path="/dasheninfo" component={DashenInfo} />
-          <Route />
+          <Route component={NotFound} />
         </Switch>
+        {currentNav ? <div>底部导航</div> : null}
       </div>
     );
   }
 }
 
-export default connect(state => ({ user: state.user }), {getUser})(Main);
+export default connect(
+  state => ({ user: state.user }),
+  { getUser }
+)(Main);
 
 // 1.实现自动登录
 //   1.componentDidMount（）
