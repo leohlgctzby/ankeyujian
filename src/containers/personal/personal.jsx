@@ -2,13 +2,31 @@
 用户个人中心路由组件
 */
 import React from "react";
-import { Result, List, WhiteSpace, Button } from "antd-mobile";
+import { Result, List, WhiteSpace, Button, Modal } from "antd-mobile";
 import { connect } from "react-redux";
+import Cookies from 'js-cookie'
+import {resetUser} from '../../redux/actions'
 
 const Item = List.Item;
 const Brief = Item.Brief;
 
 class Personal extends React.Component {
+
+  logout = () => {
+    // alert('-----')
+    Modal.alert('退出', '确定退出登录吗？', [
+      {text: '取消'},
+      {
+        text: '确定',
+        onPress: () => {
+          //干掉cookie中的userid
+          Cookies.remove('userid')
+          //干掉redux中的user
+          this.props.resetUser()
+        }
+      }
+    ])
+  }
 
   render() {
     const {username, info, header, company, post, salary} = this.props.user
@@ -34,11 +52,14 @@ class Personal extends React.Component {
         </List>
         <WhiteSpace />
         <List>
-          <Button type="warning">退出登录</Button>
+          <Button type="warning" onClick={this.logout}>退出登录</Button>
         </List>
       </div>
     );
   }
 }
 
-export default connect(state => ({ user: state.user }))(Personal);
+export default connect(
+  state => ({ user: state.user }), 
+{resetUser}
+)(Personal);
