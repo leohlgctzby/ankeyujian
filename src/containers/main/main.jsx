@@ -89,12 +89,22 @@ class Main extends Component {
     const path = this.props.location.pathname//请求的路径
     const currentNav = navList.find(nav=>nav.path===path)//得到当前的nav， 可能没有
     
+    if(currentNav) {
+      //决定哪个路由需要隐藏
+      if(user.type==='laoban') {
+        //隐藏数组的第二个
+        navList[1].hide = true
+      } else {
+        navList[0].hide = true
+      }
+    }
+
     return (
       <div>
         {currentNav ? <NavBar>{currentNav.title}</NavBar> : null}
         <Switch>
           {
-            navList.map(nav => <Route path={nav.path} component={nav.component} />)
+            navList.map(nav => <Route key={nav.path} path={nav.path} component={nav.component} />)
           }
           <Route path="/laobaninfo" component={LaobanInfo} />
           <Route path="/dasheninfo" component={DashenInfo} />

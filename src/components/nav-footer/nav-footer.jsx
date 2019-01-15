@@ -14,7 +14,9 @@ class NavFooter extends Component{
   }
 
    render(){
-     const {navList} = this.props
+     let {navList} = this.props
+     //过滤掉hide为true的nav
+     navList = navList.filter(nav => !nav.hide)
      const path = this.props.location.pathname; //请求的路径，路由组件才有location,需要引入withRoute()
 
        return (
@@ -24,7 +26,7 @@ class NavFooter extends Component{
                 <Item key={nav.path} 
                       title={nav.text}
                       icon={{uri: require('./images/' + nav.icon + '.png')}}
-                      // selectIcon={{uri: require('./images/' + nav.icon + '-selected.png')}}
+                      // selectIcon={{uri: require('./images/${nav.icon}-selected.png')}}//这个不好使，不知道为什么
                       selectedIcon={{uri: require('./images/' + nav.icon + '.png')}}
                       selected={path===nav.path} 
                       onPress={() => this.props.history.replace(nav.path)} /> //跳转路由用history
