@@ -3,28 +3,33 @@
 */
 import React from "react";
 import { Result, List, WhiteSpace, Button } from "antd-mobile";
+import { connect } from "react-redux";
+
 const Item = List.Item;
 const Brief = Item.Brief;
-export default class Personal extends React.Component {
+
+class Personal extends React.Component {
+
   render() {
+    const {username, info, header, company, post, salary} = this.props.user
     return (
       <div>
         <Result
           img={
             <img
-              src={require(`../../assets/images/头像1.png`)}
+              src={require(`../../assets/images/${header}.png`)}
               style={{ width: 50 }}
               alt="header"
             />
           }
-          title="张三"
-          message="IBM"
+          title={username}
+          message={company}
         />
         <List renderHeader={() => "相关信息"}>
           <Item multipleLine>
-            <Brief>职位: 前端工程师</Brief>
-            <Brief>简介: React/Vue/jQuery</Brief>
-            <Brief>薪资: 20k</Brief>
+            <Brief>职位: {post}</Brief>
+            <Brief>简介: {info}</Brief>
+            {salary ? <Brief>薪资: {salary}</Brief> : null}
           </Item>
         </List>
         <WhiteSpace />
@@ -35,3 +40,5 @@ export default class Personal extends React.Component {
     );
   }
 }
+
+export default connect(state => ({ user: state.user }))(Personal);
