@@ -13,7 +13,7 @@ export default class UserList extends Component {
     const { userList } = this.props;
     console.log(userList)
     return (
-      <WingBlank>
+      <WingBlank style={{marginBottom: 50, marginTop: 50}}>
         {userList.map(user => (
           <div key={user._id}>
             <WhiteSpace />
