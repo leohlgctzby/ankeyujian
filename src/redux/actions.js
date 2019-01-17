@@ -101,3 +101,10 @@ export const getUserList = (type) => {
     }
   }
 }
+
+//发送消息的异步action
+export const sendMsg = ({from, to, content}) => {
+  return dispatch => {
+    console.log('发消息', {from, to, content})
+  }
+}
