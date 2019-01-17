@@ -1,4 +1,11 @@
-import { reqRegister, reqLogin, reqUpdateUser, reqUser, reqUserList } from "../api";
+import io from "socket.io-client";
+import {
+  reqRegister,
+  reqLogin,
+  reqUpdateUser,
+  reqUser,
+  reqUserList
+} from "../api";
 import {
   AUTH_SUCCESS,
   ERROR_MSG,
@@ -6,6 +13,31 @@ import {
   RESET_USER,
   RECEIVE_USER_LIST
 } from "./action-types";
+
+//单例对象
+// 1.创建对象之前：判断对象是否已经存在，只有不存在才去创建
+// 2.创建对象之后：保存对象
+function initIO() {
+  // 1.创建对象之前：判断对象是否已经存在，只有不存在才去创建
+  if (!io.socket) {
+    //连接服务器，得到与服务器的连接对象
+    io.socket = io("ws://localhost:4000");// 2.创建对象之后：保存对象
+    // 绑定监听，接收服务器发送的消息
+    io.socket.on("receiveMsg", function(chatMsg) {
+      console.log("客户端接收到服务器发送的消息", chatMsg);
+    });
+  }
+}
+
+//发送消息的异步action
+export const sendMsg = ({ from, to, content }) => {
+  return dispatch => {
+    console.log("客户端向服务器发消息", { from, to, content });
+    initIO()
+    //发消息
+    io.socket.emit('sendMsg', { from, to, content })
+  };
+};
 
 //授权成功的同步action
 const authSuccess = user => ({ type: AUTH_SUCCESS, data: user });
@@ -16,7 +48,10 @@ const receiveUser = user => ({ type: RECEIVE_USER, data: user });
 //重置用户的同步action
 export const resetUser = msg => ({ type: RESET_USER, data: msg });
 //接收用户列表的同步action
-export const receiveUserList = (userList) => ({type: RECEIVE_USER_LIST, data: userList})
+export const receiveUserList = userList => ({
+  type: RECEIVE_USER_LIST,
+  data: userList
+});
 
 //注册异步action
 export const register = user => {
@@ -80,31 +115,24 @@ export const updateUser = user => {
 export const getUser = () => {
   return async dispatch => {
     //执行异步ajax请求
-    const response = await reqUser()
-    const result = response.data
-    if(result.code===0) {
-      dispatch(receiveUser(result.data))
+    const response = await reqUser();
+    const result = response.data;
+    if (result.code === 0) {
+      dispatch(receiveUser(result.data));
     } else {
-      dispatch(resetUser(result.msg))
+      dispatch(resetUser(result.msg));
     }
-  }
-}
+  };
+};
 
 //获取用户列表的异步action
-export const getUserList = (type) => {
+export const getUserList = type => {
   return async dispatch => {
-    const response = await reqUserList(type)
-    const result = response.data
-    console.log(result)
-    if(result.code===0) {
-      dispatch(receiveUserList(result.data))
+    const response = await reqUserList(type);
+    const result = response.data;
+    console.log(result);
+    if (result.code === 0) {
+      dispatch(receiveUserList(result.data));
     }
-  }
-}
-
-//发送消息的异步action
-export const sendMsg = ({from, to, content}) => {
-  return dispatch => {
-    console.log('发消息', {from, to, content})
-  }
-}
+  };
+};
