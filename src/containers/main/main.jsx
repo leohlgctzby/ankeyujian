@@ -72,7 +72,7 @@ class Main extends Component {
     //如果有，读取redux中的user的状态
     const { user } = this.props;
     //如果user没有_id，返回一个null（不做任何显示）
-    debugger;
+    // debugger;
     if (!user._id) {
       return null;
     } else {
