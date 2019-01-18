@@ -3,7 +3,7 @@
 */
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { NavBar, List, InputItem, Grid } from "antd-mobile";
+import { NavBar, List, InputItem, Grid, Icon } from "antd-mobile";
 import { sendMsg } from "../../redux/actions";
 
 const Item = List.Item;
@@ -22,19 +22,28 @@ class Chat extends Component {
     '😆', '😅', '😁', '😆', '😅', '😁', '😆', '😅', '😁', '😆', '😅', '😁', '😆', '😅', '😁', '😆', '😅']
     this.emojis = this.emojis.map(value => ({text: value}))
     // console.log(this.emojis)
-    }
+  }
 
-    toggleShow = () => {
-      const isShow = !this.state.isShow;
-      this.setState({ isShow });
-      if (isShow) {
-        // 异步手动派发resize 事件,解决表情列表显示的bug
-        setTimeout(() => {
-          window.dispatchEvent(new Event("resize"));
-        }, 0);
-      }
-    };
-  
+  componentDidMount() {
+    // 初始显示列表
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+  componentDidUpdate() {
+    // 更新显示列表
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+
+  toggleShow = () => {
+    const isShow = !this.state.isShow;
+    this.setState({ isShow });
+    if (isShow) {
+      // 异步手动派发resize 事件,解决表情列表显示的bug
+      setTimeout(() => {
+        window.dispatchEvent(new Event("resize"));
+      }, 0);
+    }
+  };
+
   handleSend = () => {
     //收集数据
     const from = this.props.user._id;
@@ -45,10 +54,10 @@ class Chat extends Component {
       this.props.sendMsg({ from, to, content });
     }
     //清除输入数据
-    this.setState({ 
+    this.setState({
       content: "",
       isShow: false
-  });
+    });
   };
 
   render() {
@@ -76,8 +85,14 @@ class Chat extends Component {
 
     return (
       <div id="chat-page">
-        <NavBar>aa</NavBar>
-        <List>
+        <NavBar
+          icon={<Icon type="left" />}
+          className="sticky-header"
+          onLeftClick={() => this.props.history.goBack()}
+        >
+          {users[targetId].username}
+        </NavBar>
+        <List style={{ marginTop: 50, marginBottom: 50 }}>
           {msgs.map(msg => {
             if (meId === msg.to) {
               //对方发给我,或者targetId===msg.from
@@ -101,10 +116,16 @@ class Chat extends Component {
             placeholder="请输入"
             value={this.state.content}
             onChange={val => this.setState({ content: val })}
-            onFocus={() => this.setState({isShow: false})}
+            onFocus={() => this.setState({ isShow: false })}
             extra={
               <sapn>
-                <span role="img" onClick={this.toggleShow} style={{marginRight: 5}}>😊</span>
+                <span
+                  role="img"
+                  onClick={this.toggleShow}
+                  style={{ marginRight: 5 }}
+                >
+                  😊
+                </span>
                 <span onClick={this.handleSend}>发送</span>
               </sapn>
             }
