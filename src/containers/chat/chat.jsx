@@ -27,17 +27,51 @@ class Chat extends Component {
   }
 
   render() {
+    const {user} = this.props
+    const {users, chatMsgs} = this.props.chat
+
+    //计算当前聊天的chatId
+    const meId = user._id
+    if(!users[meId]) { //如果users 没有值，直接不做任何显示
+      return null
+    }
+    const targetId = this.props.match.params.userid
+    const chatId = [meId, targetId].sort().join('_')
+
+
+    //对chatMsgs进行过滤
+    const msgs = chatMsgs.filter(msg => msg.chat_id===chatId)
+    // console.log(users)
+    // debugger
+    //得到目标用户的header头像
+    const targetHeader = users[targetId].header //点击浏览器刷新按钮，会出bug，因为users没值
+    const targetIcon = targetHeader ? require(`../../assets/images/${targetHeader}.png`) : null
+
     return (
       <div id="chat-page">
         <NavBar>aa</NavBar>
         <List>
-          <Item thumb={require("../../assets/images/头像1.png")}>你好2</Item>
-          <Item className="chat-me" extra="我">
-            很好
-          </Item>
-          <Item className="chat-me" extra="我">
-            很好2
-          </Item>
+          {
+            msgs.map(msg => {
+              if(meId===msg.to) { //对方发给我,或者targetId===msg.from
+                return (
+                  <Item 
+                    key={msg._id}
+                  thumb={targetIcon}>
+                  {msg.content}
+                  </Item>
+                )
+              } else {//我发给对方
+                return (
+                  <Item 
+                  key={msg._id}
+                  className="chat-me" extra="我">
+                  {msg.content}
+                </Item>
+                )
+              }
+            })
+          }
         </List>
         <div className="am-tab-bar">
           <InputItem placeholder="请输入" 
@@ -51,6 +85,6 @@ class Chat extends Component {
 }
 
 export default connect(
-  state => ({user: state.user}),
+  state => ({user: state.user, chat: state.chat}),
   {sendMsg}
 )(Chat)
