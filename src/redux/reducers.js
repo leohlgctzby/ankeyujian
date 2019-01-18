@@ -45,25 +45,30 @@ function userList(state = initUserList, action) {
 }
 
 const initChat = {
-  users: {},//所有用户信息的对象，属性名是userid，属性值是{username，header}
-  chatMsgs:[],//当前用户所有相关msg的数组
+  users: {}, //所有用户信息的对象，属性名是userid，属性值是{username，header}
+  chatMsgs: [], //当前用户所有相关msg的数组
   unReadCount: 0 //总的未读数量
-}
+};
 
 //产生聊天状态的reducer
-function chat(state=initChat, action) {
+function chat(state = initChat, action) {
   switch (action.type) {
-  case RECEIVE_MSG_LIST: // data: {users, chatMsgs}
-    const {users, chatMsgs} = action.data
-    return {
-      users, 
-      chatMsgs,
-      unReadCount: 0
-    }
-    case RECEIVE_MSG:
-    return
-  default:
-    return state
+    case RECEIVE_MSG_LIST: // data: {users, chatMsgs}
+      const { users, chatMsgs } = action.data;
+      return {
+        users,
+        chatMsgs,
+        unReadCount: 0
+      };
+    case RECEIVE_MSG: //data: chatMsg
+      const chatMsg = action.data;
+      return {
+        users: state.users,
+        chatMsgs: [...state.chatMsgs, chatMsg], //不能用push，纯函数
+        unReadCount: 0
+      };
+    default:
+      return state;
   }
 }
 
