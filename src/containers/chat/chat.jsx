@@ -28,14 +28,18 @@ class Chat extends Component {
     // 初始显示列表
     window.scrollTo(0, document.body.scrollHeight);
 
+  }
+
+  componentDidUpdate() {
+    // 更新显示列表
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+
+  componentWillUnmount() { //在退出前执行，如果放在componentDidMount里执行会有bug
     //发请求更新未读消息数量
     const from = this.props.match.params.userid;
     const to = this.props.user._id
     this.props.readMsg(from, to)
-  }
-  componentDidUpdate() {
-    // 更新显示列表
-    window.scrollTo(0, document.body.scrollHeight);
   }
 
   toggleShow = () => {
