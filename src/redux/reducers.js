@@ -6,7 +6,8 @@ import {
   RESET_USER,
   RECEIVE_USER_LIST,
   RECEIVE_MSG_LIST,
-  RECEIVE_MSG
+  RECEIVE_MSG,
+  MSG_RECEIVE
 } from "./action-types";
 import { getRedirectTo } from "../utils";
 
@@ -66,6 +67,19 @@ function chat(state = initChat, action) {
         users: state.users,
         chatMsgs: [...state.chatMsgs, chatMsg], //不能用push，纯函数
         unReadCount: state.unReadCount + (!chatMsg.read&&chatMsg.to===action.data.userid?1:0)
+      };
+    case MSG_RECEIVE:
+      const {from, to, count} = action.data
+      return {
+        users: state.users,
+        chatMsgs: state.chatMsgs.map(msg => {
+          if(msg.from===from&&msg.to===to&&!msg.read) { //需要更新的
+            return {...msg, read: true} //不可以用msg.read = true，不能改state数据
+          } else { //不需要
+            return msg
+          }
+        }),
+        unReadCount: state.unReadCount - count
       };
     default:
       return state;

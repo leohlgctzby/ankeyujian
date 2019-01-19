@@ -15,7 +15,8 @@ import {
   RESET_USER,
   RECEIVE_USER_LIST,
   RECEIVE_MSG_LIST,
-  RECEIVE_MSG
+  RECEIVE_MSG,
+  MSG_RECEIVE
 } from "./action-types";
 
 //单例对象
@@ -58,6 +59,18 @@ export const sendMsg = ({ from, to, content }) => {
   };
 };
 
+//读取消息的异步action
+export const readMsg = (from, to) => {
+  return async dispatch => {
+    const response = await reqReadMsg(from)
+    const result = response.data
+    if(result.code===0) {
+      const count = result.data
+      dispatch(msgRead({count, from, to}))
+    }
+  }; 
+}
+
 //授权成功的同步action
 const authSuccess = user => ({ type: AUTH_SUCCESS, data: user });
 //错误提示信息的同步action
@@ -78,6 +91,9 @@ const receiveMsgList = ({ users, chatMsgs, userid }) => ({
 });
 //接收一个消息的同步action
 const receiveMsg = (chatMsg, userid) => ({ type: RECEIVE_MSG, data: {chatMsg, userid} });
+//读取了某个聊天消息的同步action
+const msgRead = ({count, from, to}) => ({type: MSG_RECEIVE, data: {count, from, to}})
+
 
 //注册异步action
 export const register = user => {
