@@ -4,6 +4,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { NavBar, List, InputItem, Grid, Icon } from "antd-mobile";
+import QueueAnim from "rc-queue-anim";
+
 import { sendMsg, readMsg } from "../../redux/actions";
 
 const Item = List.Item;
@@ -27,7 +29,6 @@ class Chat extends Component {
   componentDidMount() {
     // 初始显示列表
     window.scrollTo(0, document.body.scrollHeight);
-
   }
 
   componentDidUpdate() {
@@ -35,11 +36,12 @@ class Chat extends Component {
     window.scrollTo(0, document.body.scrollHeight);
   }
 
-  componentWillUnmount() { //在退出前执行，如果放在componentDidMount里执行会有bug
+  componentWillUnmount() {
+    //在退出前执行，如果放在componentDidMount里执行会有bug
     //发请求更新未读消息数量
     const from = this.props.match.params.userid;
-    const to = this.props.user._id
-    this.props.readMsg(from, to)
+    const to = this.props.user._id;
+    this.props.readMsg(from, to);
   }
 
   toggleShow = () => {
@@ -102,23 +104,25 @@ class Chat extends Component {
           {users[targetId].username}
         </NavBar>
         <List style={{ marginTop: 50, marginBottom: 50 }}>
-          {msgs.map(msg => {
-            if (meId === msg.to) {
-              //对方发给我,或者targetId===msg.from
-              return (
-                <Item key={msg._id} thumb={targetIcon}>
-                  {msg.content}
-                </Item>
-              );
-            } else {
-              //我发给对方
-              return (
-                <Item key={msg._id} className="chat-me" extra="我">
-                  {msg.content}
-                </Item>
-              );
-            }
-          })}
+          <QueueAnim type="left" delay={100}>
+            {msgs.map(msg => {
+              if (meId === msg.to) {
+                //对方发给我,或者targetId===msg.from
+                return (
+                  <Item key={msg._id} thumb={targetIcon}>
+                    {msg.content}
+                  </Item>
+                );
+              } else {
+                //我发给对方
+                return (
+                  <Item key={msg._id} className="chat-me" extra="我">
+                    {msg.content}
+                  </Item>
+                );
+              }
+            })}
+          </QueueAnim>
         </List>
         <div className="am-tab-bar">
           <InputItem
