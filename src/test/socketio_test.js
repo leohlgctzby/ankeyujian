@@ -1,7 +1,7 @@
 import io from 'socket.io-client'
 
 //连接服务器，得到与服务器的连接对象
-const socket = io('ws://localhost:4000')
+const socket = io('ws://149.28.134.73:4000')
 
 //发送消息
 socket.emit('sendMsg', {name: 'abc'})
