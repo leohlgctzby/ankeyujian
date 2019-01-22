@@ -35,7 +35,7 @@ class Personal extends React.Component {
         <Result
           img={
             <img
-              src={require(`../../assets/images/${header}.png`)}
+              src={header ? require(`../../assets/images/${header}.png`) : null}
               style={{ width: 50 }}
               alt="header"
             />
