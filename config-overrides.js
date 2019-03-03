@@ -44,11 +44,6 @@ module.exports = function override(config, env) {
       {
         loader: require.resolve("less-loader"),
         options: {
-          // theme vars, also can use theme.js instead of this.
-          modifyVars: {
-            "@brand-primary": "#1cae82", // 正常
-            "@brand-primary-tap": "#1DA57A" // 按下
-          }
         }
       }
     ]
