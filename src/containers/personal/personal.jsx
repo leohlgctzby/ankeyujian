@@ -45,9 +45,9 @@ class Personal extends React.Component {
         />
         <List renderHeader={() => "相关信息"}>
           <Item multipleLine>
-            <Brief>职位: {post}</Brief>
-            <Brief>简介: {info}</Brief>
-            {salary ? <Brief>薪资: {salary}</Brief> : null}
+            <Brief>即时心情: {post}</Brief>
+            <Brief>自我介绍: {info}</Brief>
+        {/*salary ? <Brief>薪资: {salary}</Brief> : null*/}
           </Item>
         </List>
         <WhiteSpace />

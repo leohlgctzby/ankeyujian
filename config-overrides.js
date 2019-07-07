@@ -44,6 +44,11 @@ module.exports = function override(config, env) {
       {
         loader: require.resolve("less-loader"),
         options: {
+          modifyVars: {
+            "@brand-primary": "#F65C80", // 正常
+            "@brand-primary-tap": "#F65A7F" // 按下
+          }
+
         }
       }
     ]

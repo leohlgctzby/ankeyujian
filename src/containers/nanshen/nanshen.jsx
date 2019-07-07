@@ -4,9 +4,9 @@ import { getUserList } from "../../redux/actions";
 
 import UserList from "../user-list/user-list";
 
-class Dashen extends Component {
+class Nanshen extends Component {
   componentDidMount() {
-    this.props.getUserList("laoban");
+    this.props.getUserList("nvshen");
   }
 
   render() {
@@ -21,4 +21,4 @@ class Dashen extends Component {
 export default connect(
   state => ({ userList: state.userList }),
   { getUserList }
-)(Dashen);
+)(Nanshen);

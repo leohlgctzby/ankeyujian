@@ -20,7 +20,7 @@ class Register extends Component {
     username: "",
     password: "",
     password2: "",
-    type: "laoban"
+    type: "nanshen"
   };
 
   //[name] 取变量的值
@@ -49,7 +49,7 @@ class Register extends Component {
 
     return (
       <div>
-        <NavBar>老&nbsp;板&nbsp;直&nbsp;聘</NavBar>
+        <NavBar>你&nbsp;的&nbsp;遇&nbsp;见</NavBar>
         <Logo />
         <WingBlank>
           <List>
@@ -88,21 +88,21 @@ class Register extends Component {
               <span>用户类型:</span>
               &nbsp;&nbsp;&nbsp;
               <Radio
-                checked={type === "laoban"}
+                checked={type === "nanshen"}
                 onChange={val => {
-                  this.handleChange("type", "laoban");
+                  this.handleChange("type", "nanshen");
                 }}
               >
-                老板
+                男神
               </Radio>
               &nbsp;&nbsp;&nbsp;
               <Radio
-                checked={type === "dashen"}
+                checked={type === "nvshen"}
                 onChange={val => {
-                  this.handleChange("type", "dashen");
+                  this.handleChange("type", "nvshen");
                 }}
               >
-                大神
+                女神
               </Radio>
             </ListItem>
             <WhiteSpace />

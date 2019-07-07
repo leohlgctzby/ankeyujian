@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import Cookies from "js-cookie"; //可以操作前端cookie的对象set() remove（)
 import {NavBar} from 'antd-mobile'
 
-import LaobanInfo from "../laoban-info/laoban-info";
-import DashenInfo from "../dashen-info/dashen-info";
-import Dashen from "../dashen/dashen";
-import Laoban from "../laoban/lanban";
+import NanshenInfo from "../nanshen-info/nanshen-info";
+import NvshenInfo from "../nvshen-info/nvshen-info";
+import Nvshen from "../nvshen/nvshen";
+import Nanshen from "../nanshen/nanshen";
 import Message from "../message/message";
 import Personal from "../personal/personal";
 import NotFound from "../../components/not-found/not-found";
@@ -22,18 +22,18 @@ class Main extends Component {
   // 给组件对象添加属性
   navList = [ //包含所有导航组件的相关信息数据
     {
-      path: "/laoban", // 路由路径
-      component: Laoban,
-      title: "大神列表",
-      icon: "dashen",
-      text: "大神"
+      path: "/nanshen", // 路由路径
+      component: Nanshen,
+      title: "女神列表",
+      icon: "nvshen",
+      text: "女神"
     },
     {
-      path: "/dashen", // 路由路径
-      component: Dashen,
-      title: "老板列表",
-      icon: "laoban",
-      text: "老板"
+      path: "/nvshen", // 路由路径
+      component: Nvshen,
+      title: "男神列表",
+      icon: "nanshen",
+      text: "男神"
     },
     {
       path: "/message", // 路由路径
@@ -92,7 +92,7 @@ class Main extends Component {
     
     if(currentNav) {
       //决定哪个路由需要隐藏
-      if(user.type==='laoban') {
+      if(user.type==='nanshen') {
         //隐藏数组的第二个
         navList[1].hide = true
       } else {
@@ -107,8 +107,8 @@ class Main extends Component {
           {
             navList.map(nav => <Route key={nav.path} path={nav.path} component={nav.component} />)
           }
-          <Route path="/laobaninfo" component={LaobanInfo} />
-          <Route path="/dasheninfo" component={DashenInfo} />
+          <Route path="/nansheninfo" component={NanshenInfo} />
+          <Route path="/nvsheninfo" component={NvshenInfo} />
           <Route path="/chat/:userid" component={Chat} />
           <Route component={NotFound} />
         </Switch>

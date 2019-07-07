@@ -6,7 +6,7 @@ import HeaderSelector from "../../components/header-selector/header-selector";
 
 import { updateUser } from "../../redux/actions";
 
-class LaobanInfo extends Component {
+class NanshenInfo extends Component {
   state = {
     header: "",
     post: "",
@@ -36,23 +36,23 @@ class LaobanInfo extends Component {
     const { header, type } = this.props.user;
     if (header) {
       //说明信息已经完善
-      const path = type === "dashen" ? "/dashen" : "/laoban";
+      const path = type === "nvshen" ? "/nvshen" : "/nanshen";
       return <Redirect to={path} />;
     }
 
     return (
       <div>
-        <NavBar>老板信息完善</NavBar>
+        <NavBar>男神信息完善</NavBar>
         <HeaderSelector setHeader={this.setHeader} />
         <InputItem
-          placeholder="请输入招聘职位:"
+          placeholder="请输入即时心情:"
           onChange={val => {
             this.handleChange("post", val);
           }}
         >
-          招聘职位
+        即时心情
         </InputItem>
-        <InputItem
+ {/*       <InputItem
           placeholder="请输入公司名称:"
           onChange={val => {
             this.handleChange("company", val);
@@ -67,9 +67,9 @@ class LaobanInfo extends Component {
           }}
         >
           职位薪资
-        </InputItem>
+        </InputItem> */}
         <TextareaItem
-          title="职位要求:"
+          title="自我介绍:"
           rows={3}
           onChange={val => {
             this.handleChange("info", val);
@@ -88,4 +88,4 @@ export default connect(
     user: state.user
   }),
   { updateUser }
-)(LaobanInfo);
+)(NanshenInfo);

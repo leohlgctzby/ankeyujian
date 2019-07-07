@@ -46,7 +46,7 @@ class Login extends Component {
 
     return (
       <div>
-        <NavBar>老&nbsp;板&nbsp;直&nbsp;聘</NavBar>
+        <NavBar>你&nbsp;的&nbsp;遇&nbsp;见</NavBar>
         <Logo />
         <WingBlank>
           <List>
